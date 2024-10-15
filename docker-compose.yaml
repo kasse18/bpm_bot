@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-bmp-bot
+    environment:
+      POSTGRES_DB: "prod_db"
+      POSTGRES_USER: "prod_user"
+      POSTGRES_PASSWORD: "production_pass"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  telegram-bot:
+    restart: always
+    depends_on:
+      - "postgres"
+    container_name: telegram-bot
+    build:
+      dockerfile: cmd/Dockerfile
+      context: .
+    environment:
+      POSTGRES: postgresql://prod_user:production_pass@postgres:5432/prod_db?sslmode=disable
+      DEBUG: ${DEBUG-false}
+      TOKEN: ${TOKEN}
+volumes:
+  postgres:
