@@ -40,7 +40,7 @@ type Client interface {
 	CreateUser(ctx context.Context, user *models.User) error
 	UpdateUser(ctx context.Context, user *models.User) error
 	GetLeaderboard(ctx context.Context) (map[string]int64, error)
-	GetUsers(ctx context.Context) string
+	//GetUsers(ctx context.Context) string
 }
 
 func (r *PostgresClient) GetUser(ctx context.Context, user *models.User) error {
