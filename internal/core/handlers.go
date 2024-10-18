@@ -128,6 +128,7 @@ func (r *TelegramBot) handleGetBalance(ctx context.Context, user *models.User, u
 	return nil
 }
 
+//
 //func (r *TelegramBot) handleAll(ctx context.Context, update *tgbotapi.Update) {
 //	update.Message.
 //}

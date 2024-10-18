@@ -35,12 +35,12 @@ func NewPostgresClient(ctx context.Context, connStr string) *PostgresClient {
 	}
 }
 
-type IClient interface {
+type Client interface {
 	GetUser(ctx context.Context, user *models.User) error
 	CreateUser(ctx context.Context, user *models.User) error
 	UpdateUser(ctx context.Context, user *models.User) error
-
 	GetLeaderboard(ctx context.Context) (map[string]int64, error)
+	GetUsers(ctx context.Context) string
 }
 
 func (r *PostgresClient) GetUser(ctx context.Context, user *models.User) error {
@@ -93,3 +93,9 @@ func (r *PostgresClient) GetLeaderboard(ctx context.Context) (map[string]int64, 
 	fmt.Println("LEADERBOARD:", out)
 	return out, nil
 }
+
+//
+//func (r *PostgresClient) GetUsers(ctx context.Context) string {
+//	out := ""
+//	rows, err := r.conn.QueryRowContext(ctx, queryUsers)
+//}

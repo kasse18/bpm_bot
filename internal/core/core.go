@@ -9,12 +9,12 @@ import (
 )
 
 type TelegramBot struct {
-	dbClient db.IClient
+	dbClient db.Client
 	bot      *tgbotapi.BotAPI
 	logger   *zap.Logger
 }
 
-func NewTelegramBot(dbClient db.IClient, logger *zap.Logger) *TelegramBot {
+func NewTelegramBot(dbClient db.Client, logger *zap.Logger) *TelegramBot {
 	bot, err := tgbotapi.NewBotAPI(os.Getenv(sdk.EnvToken))
 	if err != nil {
 		panic(err)
