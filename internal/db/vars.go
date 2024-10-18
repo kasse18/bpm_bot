@@ -4,7 +4,7 @@ const (
 	queryUser        = "SELECT * FROM users WHERE id=$1"
 	insertUser       = "INSERT INTO users (id, username, state, balance) values ($1, $2, $3, $4)"
 	updateUser       = "UPDATE users SET state=$1, balance=$2 WHERE id=$3"
-	queryLeaderboard = "SELECT id, username, balance FROM users ORDER BY balance DESC"
+	queryLeaderboard = "SELECT id, username, balance FROM users WHERE chat_id=$1 ORDER BY balance DESC"
 )
 
 const (

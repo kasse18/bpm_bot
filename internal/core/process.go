@@ -47,6 +47,8 @@ func (r *TelegramBot) handleCommand(ctx context.Context, user *models.User, upda
 		return r.handleStart(user)
 	case sdk.CommandLeaderboard:
 		return r.handleLeaderboard(ctx, update)
+	case sdk.CommandGetBalance:
+		return r.handleGetBalance(ctx, user, update)
 	}
 
 	return nil

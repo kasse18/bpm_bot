@@ -9,6 +9,7 @@ const (
 const (
 	CommandStart       = "start"
 	CommandLeaderboard = "leaderboard"
+	CommandGetBalance  = "getbalance"
 )
 
 const (

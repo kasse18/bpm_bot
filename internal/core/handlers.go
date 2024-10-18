@@ -27,6 +27,13 @@ func (r *TelegramBot) handleStart(user *models.User) error {
 }
 
 func (r *TelegramBot) handleCasino(ctx context.Context, user *models.User, update *tgbotapi.Update) error {
+	if user.Balance <= 0 {
+		config := tgbotapi.DeleteMessageConfig{ChatID: update.Message.Chat.ID, MessageID: update.Message.MessageID}
+		if _, err := r.bot.Send(config); err != nil {
+			return err
+		}
+		return nil
+	}
 	val := update.Message.Dice.Value
 	score := int64(0)
 	switch val {
@@ -81,3 +88,46 @@ func (r *TelegramBot) handleLeaderboard(ctx context.Context, update *tgbotapi.Up
 	}
 	return nil
 }
+
+func (r *TelegramBot) handleGetBalance(ctx context.Context, user *models.User, update *tgbotapi.Update) error {
+	balance := user.Balance
+	if balance > 0 {
+		config := tgbotapi.MessageConfig{
+			BaseChat: tgbotapi.BaseChat{
+				ChatID:           update.Message.Chat.ID,
+				ReplyToMessageID: update.Message.MessageID,
+			},
+			Text:                  fmt.Sprintf("Баланс должен быть <= 0"),
+			ParseMode:             "",
+			Entities:              nil,
+			DisableWebPagePreview: false,
+		}
+		if _, err := r.bot.Send(config); err != nil {
+			return err
+		}
+		return nil
+	}
+	user.Balance = user.Balance + 10
+	if err := r.dbClient.UpdateUser(ctx, user); err != nil {
+		r.logger.Error("failed to update user balance", zap.Error(err))
+	}
+	config := tgbotapi.MessageConfig{
+		BaseChat: tgbotapi.BaseChat{
+			ChatID:           update.Message.Chat.ID,
+			ReplyToMessageID: update.Message.MessageID,
+		},
+		Text:                  fmt.Sprintf("Баланс обновлен: %v", user.Balance),
+		ParseMode:             "",
+		Entities:              nil,
+		DisableWebPagePreview: false,
+	}
+
+	if _, err := r.bot.Send(config); err != nil {
+		return err
+	}
+	return nil
+}
+
+//func (r *TelegramBot) handleAll(ctx context.Context, update *tgbotapi.Update) {
+//	update.Message.
+//}
