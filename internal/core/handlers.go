@@ -27,6 +27,22 @@ func (r *TelegramBot) handleStart(user *models.User) error {
 }
 
 func (r *TelegramBot) handleCasino(ctx context.Context, user *models.User, update *tgbotapi.Update) error {
+	if update.Message.ForwardFromChat != nil {
+		config := tgbotapi.MessageConfig{
+			BaseChat: tgbotapi.BaseChat{
+				ChatID:           update.Message.Chat.ID,
+				ReplyToMessageID: update.Message.MessageID,
+			},
+			Text:                  fmt.Sprintf("Саси жопу"),
+			ParseMode:             "",
+			Entities:              nil,
+			DisableWebPagePreview: false,
+		}
+		if _, err := r.bot.Send(config); err != nil {
+			return err
+		}
+		return nil
+	}
 	if user.Balance <= 0 {
 		config := tgbotapi.DeleteMessageConfig{ChatID: update.Message.Chat.ID, MessageID: update.Message.MessageID}
 		if _, err := r.bot.Send(config); err != nil {
