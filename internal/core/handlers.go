@@ -27,7 +27,7 @@ func (r *TelegramBot) handleStart(user *models.User) error {
 }
 
 func (r *TelegramBot) handleCasino(ctx context.Context, user *models.User, update *tgbotapi.Update) error {
-	if update.Message.ForwardFromChat != nil {
+	if update.Message.ForwardFromChat != nil || update.Message.ForwardFromMessageID > 0 {
 		config := tgbotapi.MessageConfig{
 			BaseChat: tgbotapi.BaseChat{
 				ChatID:           update.Message.Chat.ID,
