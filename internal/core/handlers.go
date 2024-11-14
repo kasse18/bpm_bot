@@ -31,6 +31,7 @@ func (r *TelegramBot) handleCasino(ctx context.Context, user *models.User, updat
 	log.Println("FORWARD_FROM_CHAT: ", update.Message.ForwardFromChat)
 	log.Println("FORWARD_FROM_MESSAGE_ID: ", update.Message.ForwardFromMessageID)
 	log.Println("UPDATE: ", update)
+	log.Println("FORWARD_FROM_MESSAGE_ID: ", update.Message.ForwardFromMessageID)
 	if update.Message.ForwardFromChat != nil || update.Message.ForwardFromMessageID > 0 {
 		config := tgbotapi.MessageConfig{
 			BaseChat: tgbotapi.BaseChat{
