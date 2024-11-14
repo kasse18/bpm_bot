@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"go.uber.org/zap"
-	"log"
 )
 
 func (r *TelegramBot) handleStart(user *models.User) error {
@@ -28,11 +27,7 @@ func (r *TelegramBot) handleStart(user *models.User) error {
 }
 
 func (r *TelegramBot) handleCasino(ctx context.Context, user *models.User, update *tgbotapi.Update) error {
-	log.Println("FORWARD_FROM_CHAT: ", update.Message.ForwardFromChat)
-	log.Println("FORWARD_FROM_MESSAGE_ID: ", update.Message.ForwardFromMessageID)
-	log.Println("UPDATE: ", update)
-	log.Println("FORWARD FROM: ", update.Message.ForwardFrom)
-	if update.Message.ForwardFromChat != nil || update.Message.ForwardFromMessageID > 0 {
+	if update.Message.ForwardFrom != nil {
 		config := tgbotapi.MessageConfig{
 			BaseChat: tgbotapi.BaseChat{
 				ChatID:           update.Message.Chat.ID,
